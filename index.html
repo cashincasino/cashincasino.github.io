@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="casino.css">
 </head>
+
 <body class="casino-bg min-h-screen text-white">
     <div class="topbar fixed top-0 left-0 right-0 z-50 p-4 flex justify-between items-center">
         <h1 class="text-3xl font-bold neon-text">CASH-IN CASINO!</h1>
@@ -41,7 +43,6 @@
         </div>
     </div>
 
-    <!-- Main Content Area -->
     <div class="ml-64 pt-20 min-h-screen">
         <div id="lobby" class="container mx-auto px-6 py-8">
             <div class="text-center mb-8">
@@ -58,7 +59,7 @@
                 <div class="card-bg rounded-lg p-6 text-center border-2 border-red-800">
                     <h2 class="text-3xl font-bold mb-6 text-red-400">coin flip</h2>
                     <div class="text-2xl mb-4">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
-                    
+
                     <div class="mb-6">
                         <label class="block mb-2">bet amount:</label>
                         <input type="number" id="coinBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
@@ -80,7 +81,7 @@
                 <div class="card-bg rounded-lg p-6 text-center border-2 border-red-800">
                     <h2 class="text-3xl font-bold mb-6 text-red-400">slots</h2>
                     <div class="text-2xl mb-4">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
-                    
+
                     <div class="mb-6">
                         <label class="block mb-2">bet amount:</label>
                         <input type="number" id="slotBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
@@ -103,7 +104,7 @@
                 <div class="card-bg rounded-lg p-6 text-center border-2 border-red-800">
                     <h2 class="text-3xl font-bold mb-6 text-red-400">roulette</h2>
                     <div class="text-2xl mb-4">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
-                    
+
                     <div class="mb-6">
                         <label class="block mb-2">bet amount:</label>
                         <input type="number" id="rouletteBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
@@ -118,9 +119,14 @@
                         <button onclick="setBet('high')" class="px-3 py-2 bg-purple-600 rounded hover:bg-purple-500 border border-purple-400">19-36</button>
                     </div>
 
+                    <div class="mb-6 relative">
+                        <div class="roulette-pointer"></div>
+                        <div id="rouletteWheel" class="roulette-wheel"></div>
+                    </div>
+
                     <div class="text-lg mb-4">your bet: <span id="currentBet" class="text-purple-400">none</span></div>
                     <button onclick="spinRoulette()" id="rouletteBtn" class="px-8 py-3 bg-red-800 rounded-lg hover:bg-red-700 text-xl border border-red-600" disabled>spin!</button>
-                    <div id="rouletteResult" class="text-4xl mt-4"></div>
+                    <div id="rouletteResult" class="text-2xl mt-4"></div>
                     <div id="rouletteMessage" class="text-lg mt-2"></div>
                 </div>
             </div>
@@ -131,7 +137,7 @@
                 <div class="card-bg rounded-lg p-6 border-2 border-red-800">
                     <h2 class="text-3xl font-bold mb-6 text-center text-red-400">blackjack</h2>
                     <div class="text-2xl mb-4 text-center">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
-                    
+
                     <div class="mb-6 text-center">
                         <label class="block mb-2">bet amount:</label>
                         <input type="number" id="blackjackBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
@@ -163,24 +169,27 @@
                 <div class="card-bg rounded-lg p-6 text-center border-2 border-red-800">
                     <h2 class="text-3xl font-bold mb-6 text-red-400">plinko</h2>
                     <div class="text-2xl mb-4">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
-                    
+
                     <div class="mb-6">
                         <label class="block mb-2">bet amount:</label>
                         <input type="number" id="plinkoBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
                     </div>
 
-                    <div id="plinkoBoard" class="relative mx-auto mb-6 border-2 border-red-700" style="width: 400px; height: 500px; background: #000000; border-radius: 10px;"></div>
-
+                    <div id="plinkoBoard" class="relative mx-auto mb-6 border-2 border-red-700" style="width: 500px; height: 600px; background: #000000; border-radius: 10px;"></div>
                     <div class="flex justify-center mb-4 text-sm text-purple-400">
-                        <span class="px-2">0.1x</span>
-                        <span class="px-2">0.5x</span>
-                        <span class="px-2">1.0x</span>
-                        <span class="px-2">2.0x</span>
-                        <span class="px-2">5.0x</span>
-                        <span class="px-2">2.0x</span>
-                        <span class="px-2">1.0x</span>
-                        <span class="px-2">0.5x</span>
-                        <span class="px-2">0.1x</span>
+                         <span class="px-1 text-yellow-300 font-bold">100x</span>
+                         <span class="px-1 text-orange-300 font-bold">50x</span>
+                         <span class="px-1">5.0x</span>
+                         <span class="px-1">2.0x</span>
+                         <span class="px-1">1.0x</span>
+                         <span class="px-1">0.5x</span>
+                         <span class="px-1">0.25x</span>
+                         <span class="px-1">0.5x</span>
+                         <span class="px-1">1.0x</span>
+                         <span class="px-1">2.0x</span>
+                         <span class="px-1">5.0x</span>
+                         <span class="px-1 text-orange-300 font-bold">50x</span>
+                         <span class="px-1 text-yellow-300 font-bold">100x</span>
                     </div>
 
                     <button onclick="dropPlinko()" id="plinkoBtn" class="px-8 py-3 bg-red-800 rounded-lg hover:bg-red-700 text-xl border border-red-600">drop ball!</button>
@@ -188,8 +197,8 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="casino.js"></script>
+        <script src="casino.js"></script>
 </body>
+
 </html>
