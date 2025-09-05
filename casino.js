@@ -1,4 +1,3 @@
-        let balance = 10;
         let currentPage = 'lobby';
         let rouletteBetType = null;
         let blackjackGame = {
@@ -7,14 +6,18 @@
             dealerHand: [],
             gameActive: false
         };
+        let balance = parseInt(localStorage.getItem('balance')) || 10;
+
 
         updateBalance();
         setupPlinko();
 
         function updateBalance() {
-            const balanceElements = document.querySelectorAll('#balance, .balance-display');
-            balanceElements.forEach(el => el.textContent = `C$${balance}`);
+             localStorage.setItem('balance', balance);
+             const balanceElements = document.querySelectorAll('#balance, .balance-display');
+             balanceElements.forEach(el => el.textContent = `C$${balance}`);
         }
+
 
         function resetMoney() {
             balance = 10;
