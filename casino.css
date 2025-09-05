@@ -1,42 +1,123 @@
- .casino-bg {
-            background: linear-gradient(135deg, #000000 0%, #4c1d95 50%, #dc2626 100%);
-        }
-        .card-bg {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(220, 38, 38, 0.3);
-        }
-        .neon-text {
-            text-shadow: 0 0 10px #dc2626, 0 0 20px #dc2626, 0 0 30px #dc2626;
-        }
-        .slot-reel {
-            animation: spin 1s ease-in-out;
-        }
-        @keyframes spin {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-200px); }
-            100% { transform: translateY(0); }
-        }
-        .plinko-peg {
-            width: 8px;
-            height: 8px;
-            background: #dc2626;
-            border-radius: 50%;
-            position: absolute;
-        }
-        .plinko-ball {
-            width: 12px;
-            height: 12px;
-            background: #fbbf24;
-            border-radius: 50%;
-            position: absolute;
-            transition: all 0.1s linear;
-        }
-        .sidebar {
-            background: linear-gradient(180deg, #000000 0%, #1f1f1f 100%);
-            border-right: 2px solid #dc2626;
-        }
-        .topbar {
-            background: linear-gradient(90deg, #000000 0%, #4c1d95 50%, #dc2626 100%);
-            border-bottom: 2px solid #dc2626;
-        }
+.casino-bg {
+    background: linear-gradient(135deg, #000000 0%, #4c1d95 50%, #dc2626 100%);
+}
+.card-bg {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+}
+.neon-text {
+    text-shadow: 0 0 10px #dc2626, 0 0 20px #dc2626, 0 0 30px #dc2626;
+}
+.slot-reel {
+    animation: slotSpin 2s ease-in-out;
+}
+
+/* added an animation here, didnt work, too lazy to remove*/
+@keyframes slotSpin {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(0); }
+}
+.plinko-peg {
+    width: 8px;
+    height: 8px;
+    background: #dc2626;
+    border-radius: 50%;
+    position: absolute;
+}
+.plinko-ball {
+    width: 12px;
+    height: 12px;
+    background: #fbbf24;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.1s linear;
+    z-index: 10;
+}
+.plinko-slot {
+    position: absolute;
+    background: #dc2626;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #991b1b;
+    width: 35px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+}
+.sidebar {
+    background: linear-gradient(180deg, #000000 0%, #1f1f1f 100%);
+    border-right: 2px solid #dc2626;
+}
+.topbar {
+    background: linear-gradient(90deg, #000000 0%, #4c1d95 50%, #dc2626 100%);
+    border-bottom: 2px solid #dc2626;
+}
+.roulette-wheel {
+    width: 300px;
+    height: 300px;
+    border: 8px solid #ffd700;
+    border-radius: 50%;
+    position: relative;
+    background: conic-gradient(
+        from 0deg,
+        #dc2626 0deg 9.73deg,
+        #000000 9.73deg 19.46deg,
+        #dc2626 19.46deg 29.19deg,
+        #000000 29.19deg 38.92deg,
+        #dc2626 38.92deg 48.65deg,
+        #000000 48.65deg 58.38deg,
+        #dc2626 58.38deg 68.11deg,
+        #000000 68.11deg 77.84deg,
+        #dc2626 77.84deg 87.57deg,
+        #000000 87.57deg 97.3deg,
+        #dc2626 97.3deg 107.03deg,
+        #000000 107.03deg 116.76deg,
+        #dc2626 116.76deg 126.49deg,
+        #000000 126.49deg 136.22deg,
+        #dc2626 136.22deg 145.95deg,
+        #000000 145.95deg 155.68deg,
+        #dc2626 155.68deg 165.41deg,
+        #000000 165.41deg 175.14deg,
+        #dc2626 175.14deg 184.87deg,
+        #000000 184.87deg 194.6deg,
+        #dc2626 194.6deg 204.33deg,
+        #000000 204.33deg 214.06deg,
+        #dc2626 214.06deg 223.79deg,
+        #000000 223.79deg 233.52deg,
+        #dc2626 233.52deg 243.25deg,
+        #000000 243.25deg 252.98deg,
+        #dc2626 252.98deg 262.71deg,
+        #000000 262.71deg 272.44deg,
+        #dc2626 272.44deg 282.17deg,
+        #000000 282.17deg 291.9deg,
+        #dc2626 291.9deg 301.63deg,
+        #000000 301.63deg 311.36deg,
+        #dc2626 311.36deg 321.09deg,
+        #000000 321.09deg 330.82deg,
+        #dc2626 330.82deg 340.55deg,
+        #000000 340.55deg 350.28deg,
+        #008000 350.28deg 360deg
+    );
+    margin: 0 auto;
+}
+.roulette-pointer {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid #ffd700;
+    z-index: 10;
+}
+.spinning {
+    animation: rouletteSpin 3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+@keyframes rouletteSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(var(--final-rotation, 720deg)); }
+}
