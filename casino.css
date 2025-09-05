@@ -1,0 +1,42 @@
+ .casino-bg {
+            background: linear-gradient(135deg, #000000 0%, #4c1d95 50%, #dc2626 100%);
+        }
+        .card-bg {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+        .neon-text {
+            text-shadow: 0 0 10px #dc2626, 0 0 20px #dc2626, 0 0 30px #dc2626;
+        }
+        .slot-reel {
+            animation: spin 1s ease-in-out;
+        }
+        @keyframes spin {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-200px); }
+            100% { transform: translateY(0); }
+        }
+        .plinko-peg {
+            width: 8px;
+            height: 8px;
+            background: #dc2626;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .plinko-ball {
+            width: 12px;
+            height: 12px;
+            background: #fbbf24;
+            border-radius: 50%;
+            position: absolute;
+            transition: all 0.1s linear;
+        }
+        .sidebar {
+            background: linear-gradient(180deg, #000000 0%, #1f1f1f 100%);
+            border-right: 2px solid #dc2626;
+        }
+        .topbar {
+            background: linear-gradient(90deg, #000000 0%, #4c1d95 50%, #dc2626 100%);
+            border-bottom: 2px solid #dc2626;
+        }

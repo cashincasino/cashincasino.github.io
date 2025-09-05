@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cash-in casino!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="casino.css">
+</head>
+<body class="casino-bg min-h-screen text-white">
+    <div class="topbar fixed top-0 left-0 right-0 z-50 p-4 flex justify-between items-center">
+        <h1 class="text-3xl font-bold neon-text">CASH-IN CASINO!</h1>
+        <div class="card-bg rounded-lg px-4 py-2">
+            <span class="text-xl">balance: <span id="balance" class="text-yellow-400 font-bold">C$10</span></span>
+        </div>
+    </div>
+
+    <div class="sidebar fixed top-16 left-0 w-64 h-full pt-4 z-40">
+        <div class="px-4 space-y-2">
+            <button onclick="showGame('lobby')" class="w-full p-3 text-left bg-red-900 hover:bg-red-800 rounded-lg transition-colors border border-red-700">
+                🎰 lobby
+            </button>
+            <button onclick="showGame('coinflip')" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
+                🪙 coin flip
+            </button>
+            <button onclick="showGame('slots')" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
+                🎰 slots
+            </button>
+            <button onclick="showGame('roulette')" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
+                🎯 roulette
+            </button>
+            <button onclick="showGame('blackjack')" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
+                🃏 blackjack
+            </button>
+            <button onclick="showGame('plinko')" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
+                🔻 plinko
+            </button>
+            <button onclick="resetMoney()" class="w-full p-3 text-left bg-black hover:bg-gray-900 rounded-lg transition-colors border border-red-700 mt-4">
+                💰 reset money
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="ml-64 pt-20 min-h-screen">
+        <div id="lobby" class="container mx-auto px-6 py-8">
+            <div class="text-center mb-8">
+                <div class="card-bg rounded-lg p-8 max-w-2xl mx-auto">
+                    <h2 class="text-4xl font-bold mb-4 text-red-400">welcome to the casino!</h2>
+                    <p class="text-xl text-gray-300">choose a game from the sidebar to get started</p>
+                    <p class="text-lg mt-4 text-purple-400">good luck and gamble responsibly!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="coinflip" class="hidden container mx-auto px-6 py-8">
+            <div class="max-w-md mx-auto">
+                <div class="card-bg rounded-lg p-6 text-center border-2 border-red-800">
+                    <h2 class="text-3xl font-bold mb-6 text-red-400">coin flip</h2>
+                    <div class="text-2xl mb-4">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2">bet amount:</label>
+                        <input type="number" id="coinBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                    </div>
+
+                    <div class="mb-6">
+                        <button onclick="coinFlip('heads')" class="px-6 py-3 bg-purple-800 rounded-lg hover:bg-purple-700 mr-4 border border-purple-600">heads</button>
+                        <button onclick="coinFlip('tails')" class="px-6 py-3 bg-red-800 rounded-lg hover:bg-red-700 border border-red-600">tails</button>
+                    </div>
+
+                    <div id="coinResult" class="text-6xl mb-4">🪙</div>
+                    <div id="coinMessage" class="text-lg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="slots" class="hidden container mx-auto px-6 py-8">
+            <div class="max-w-md mx-auto">
+                <div class="card-bg rounded-lg p-6 text-center border-2 border-red-800">
+                    <h2 class="text-3xl font-bold mb-6 text-red-400">slots</h2>
+                    <div class="text-2xl mb-4">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2">bet amount:</label>
+                        <input type="number" id="slotBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                    </div>
+
+                    <div class="flex justify-center mb-6 space-x-4 bg-black rounded-lg p-4 border-2 border-purple-700">
+                        <div class="slot-reel text-6xl" id="slot1">🎰</div>
+                        <div class="slot-reel text-6xl" id="slot2">🍊</div>
+                        <div class="slot-reel text-6xl" id="slot3">🍇</div>
+                    </div>
+
+                    <button onclick="spinSlots()" id="spinBtn" class="px-8 py-3 bg-purple-800 rounded-lg hover:bg-purple-700 text-xl border border-purple-600">spin!</button>
+                    <div id="slotMessage" class="text-lg mt-4"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="roulette" class="hidden container mx-auto px-6 py-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="card-bg rounded-lg p-6 text-center border-2 border-red-800">
+                    <h2 class="text-3xl font-bold mb-6 text-red-400">roulette</h2>
+                    <div class="text-2xl mb-4">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2">bet amount:</label>
+                        <input type="number" id="rouletteBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                    </div>
+
+                    <div class="grid grid-cols-6 gap-2 mb-6 max-w-lg mx-auto">
+                        <button onclick="setBet('red')" class="px-3 py-2 bg-red-800 rounded hover:bg-red-700 border border-red-600">red</button>
+                        <button onclick="setBet('black')" class="px-3 py-2 bg-black rounded hover:bg-gray-900 border border-gray-600">black</button>
+                        <button onclick="setBet('even')" class="px-3 py-2 bg-purple-800 rounded hover:bg-purple-700 border border-purple-600">even</button>
+                        <button onclick="setBet('odd')" class="px-3 py-2 bg-purple-700 rounded hover:bg-purple-600 border border-purple-500">odd</button>
+                        <button onclick="setBet('low')" class="px-3 py-2 bg-red-700 rounded hover:bg-red-600 border border-red-500">1-18</button>
+                        <button onclick="setBet('high')" class="px-3 py-2 bg-purple-600 rounded hover:bg-purple-500 border border-purple-400">19-36</button>
+                    </div>
+
+                    <div class="text-lg mb-4">your bet: <span id="currentBet" class="text-purple-400">none</span></div>
+                    <button onclick="spinRoulette()" id="rouletteBtn" class="px-8 py-3 bg-red-800 rounded-lg hover:bg-red-700 text-xl border border-red-600" disabled>spin!</button>
+                    <div id="rouletteResult" class="text-4xl mt-4"></div>
+                    <div id="rouletteMessage" class="text-lg mt-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="blackjack" class="hidden container mx-auto px-6 py-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="card-bg rounded-lg p-6 border-2 border-red-800">
+                    <h2 class="text-3xl font-bold mb-6 text-center text-red-400">blackjack</h2>
+                    <div class="text-2xl mb-4 text-center">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
+                    
+                    <div class="mb-6 text-center">
+                        <label class="block mb-2">bet amount:</label>
+                        <input type="number" id="blackjackBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-xl mb-2">dealer's hand: <span id="dealerScore" class="text-purple-400">0</span></h3>
+                        <div id="dealerCards" class="flex flex-wrap gap-2 mb-4 min-h-[60px] bg-black rounded-lg p-3 border border-red-700"></div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-xl mb-2">your hand: <span id="playerScore" class="text-purple-400">0</span></h3>
+                        <div id="playerCards" class="flex flex-wrap gap-2 mb-4 min-h-[60px] bg-black rounded-lg p-3 border border-red-700"></div>
+                    </div>
+
+                    <div class="text-center">
+                        <button onclick="startBlackjack()" id="dealBtn" class="px-6 py-2 bg-purple-800 rounded-lg hover:bg-purple-700 mr-2 border border-purple-600">deal</button>
+                        <button onclick="hit()" id="hitBtn" class="px-6 py-2 bg-red-800 rounded-lg hover:bg-red-700 mr-2 border border-red-600" disabled>hit</button>
+                        <button onclick="stand()" id="standBtn" class="px-6 py-2 bg-black rounded-lg hover:bg-gray-900 border border-gray-600" disabled>stand</button>
+                    </div>
+
+                    <div id="blackjackMessage" class="text-lg mt-4 text-center"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="plinko" class="hidden container mx-auto px-6 py-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="card-bg rounded-lg p-6 text-center border-2 border-red-800">
+                    <h2 class="text-3xl font-bold mb-6 text-red-400">plinko</h2>
+                    <div class="text-2xl mb-4">balance: <span class="text-yellow-400 font-bold balance-display">C$10</span></div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2">bet amount:</label>
+                        <input type="number" id="plinkoBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                    </div>
+
+                    <div id="plinkoBoard" class="relative mx-auto mb-6 border-2 border-red-700" style="width: 400px; height: 500px; background: #000000; border-radius: 10px;"></div>
+
+                    <div class="flex justify-center mb-4 text-sm text-purple-400">
+                        <span class="px-2">0.1x</span>
+                        <span class="px-2">0.5x</span>
+                        <span class="px-2">1.0x</span>
+                        <span class="px-2">2.0x</span>
+                        <span class="px-2">5.0x</span>
+                        <span class="px-2">2.0x</span>
+                        <span class="px-2">1.0x</span>
+                        <span class="px-2">0.5x</span>
+                        <span class="px-2">0.1x</span>
+                    </div>
+
+                    <button onclick="dropPlinko()" id="plinkoBtn" class="px-8 py-3 bg-red-800 rounded-lg hover:bg-red-700 text-xl border border-red-600">drop ball!</button>
+                    <div id="plinkoMessage" class="text-lg mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="casino.js"></script>
+</body>
+</html>
