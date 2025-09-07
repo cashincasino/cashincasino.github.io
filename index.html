@@ -37,8 +37,11 @@
             <button onclick="showGame('plinko')" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
                 🔻 plinko
             </button>
-           <button onclick="" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
-               ⚪ skins (COMING SOON)
+            <button onclick="showGame('dice')" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
+                🎲 dice
+            </button>
+            <button onclick="" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
+                ⚪ skins (COMING SOON)
             </button>
             <button onclick="" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
                 📦 crates (COMING SOON)
@@ -69,7 +72,7 @@
 
                     <div class="mb-6">
                         <label class="block mb-2">bet amount:</label>
-                        <input type="number" id="coinBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                        <input type="number" id="coinBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700" oninput="validateInput(this)">
                     </div>
 
                     <div class="mb-6">
@@ -91,7 +94,7 @@
 
                     <div class="mb-6">
                         <label class="block mb-2">bet amount:</label>
-                        <input type="number" id="slotBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                        <input type="number" id="slotBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700" oninput="validateInput(this)">
                     </div>
 
                     <div class="flex justify-center mb-6 space-x-4 bg-black rounded-lg p-4 border-2 border-purple-700">
@@ -114,7 +117,7 @@
 
                     <div class="mb-6">
                         <label class="block mb-2">bet amount:</label>
-                        <input type="number" id="rouletteBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                        <input type="number" id="rouletteBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700" oninput="validateInput(this)">
                     </div>
 
                     <div class="grid grid-cols-6 gap-2 mb-6 max-w-lg mx-auto">
@@ -147,7 +150,7 @@
 
                     <div class="mb-6 text-center">
                         <label class="block mb-2">bet amount:</label>
-                        <input type="number" id="blackjackBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                        <input type="number" id="blackjackBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700" oninput="validateInput(this)">
                     </div>
 
                     <div class="mb-6">
@@ -179,24 +182,24 @@
 
                     <div class="mb-6">
                         <label class="block mb-2">bet amount:</label>
-                        <input type="number" id="plinkoBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700">
+                        <input type="number" id="plinkoBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700" oninput="validateInput(this)">
                     </div>
 
                     <div id="plinkoBoard" class="relative mx-auto mb-6 border-2 border-red-700" style="width: 500px; height: 600px; background: #000000; border-radius: 10px;"></div>
                     <div class="flex justify-center mb-4 text-sm text-purple-400">
-                         <span class="px-1 text-yellow-300 font-bold">100x</span>
-                         <span class="px-1 text-orange-300 font-bold">50x</span>
-                         <span class="px-1">5.0x</span>
-                         <span class="px-1">2.0x</span>
-                         <span class="px-1">1.0x</span>
-                         <span class="px-1">0.5x</span>
-                         <span class="px-1">0.25x</span>
-                         <span class="px-1">0.5x</span>
-                         <span class="px-1">1.0x</span>
-                         <span class="px-1">2.0x</span>
-                         <span class="px-1">5.0x</span>
-                         <span class="px-1 text-orange-300 font-bold">50x</span>
-                         <span class="px-1 text-yellow-300 font-bold">100x</span>
+                        <span class="px-1 text-yellow-300 font-bold">100x</span>
+                        <span class="px-1 text-orange-300 font-bold">50x</span>
+                        <span class="px-1">5.0x</span>
+                        <span class="px-1">2.0x</span>
+                        <span class="px-1">1.0x</span>
+                        <span class="px-1">0.5x</span>
+                        <span class="px-1">0.25x</span>
+                        <span class="px-1">0.5x</span>
+                        <span class="px-1">1.0x</span>
+                        <span class="px-1">2.0x</span>
+                        <span class="px-1">5.0x</span>
+                        <span class="px-1 text-orange-300 font-bold">50x</span>
+                        <span class="px-1 text-yellow-300 font-bold">100x</span>
                     </div>
 
                     <button onclick="dropPlinko()" id="plinkoBtn" class="px-8 py-3 bg-red-800 rounded-lg hover:bg-red-700 text-xl border border-red-600">drop ball!</button>
@@ -204,6 +207,40 @@
                 </div>
             </div>
         </div>
+
+        <div id="dice" class="hidden container mx-auto px-6 py-8">
+            <div class="max-w-md mx-auto">
+                <div class="card-bg rounded-lg p-6 text-center border-2 border-red-800">
+                    <h2 class="text-3xl font-bold mb-6 text-red-400">dice</h2>
+                    <div class="text-2xl mb-4">balance: <span class="text-yellow-400 font-bold balance-display">c$10</span></div>
+
+                    <div class="mb-6">
+                        <label class="block mb-2">bet amount:</label>
+                        <input type="number" id="diceBet" min="1" max="10" value="1" class="px-4 py-2 rounded bg-black text-white w-24 text-center border border-red-700" oninput="validateInput(this)">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block mb-3">pick a number (1-6):</label>
+                        <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto">
+                            <button onclick="setBetNumber(1)" class="dice-bet-btn px-4 py-3 bg-purple-800 rounded-lg hover:bg-purple-700 border border-purple-600">1</button>
+                            <button onclick="setBetNumber(2)" class="dice-bet-btn px-4 py-3 bg-purple-800 rounded-lg hover:bg-purple-700 border border-purple-600">2</button>
+                            <button onclick="setBetNumber(3)" class="dice-bet-btn px-4 py-3 bg-purple-800 rounded-lg hover:bg-purple-700 border border-purple-600">3</button>
+                            <button onclick="setBetNumber(4)" class="dice-bet-btn px-4 py-3 bg-purple-800 rounded-lg hover:bg-purple-700 border border-purple-600">4</button>
+                            <button onclick="setBetNumber(5)" class="dice-bet-btn px-4 py-3 bg-purple-800 rounded-lg hover:bg-purple-700 border border-purple-600">5</button>
+                            <button onclick="setBetNumber(6)" class="dice-bet-btn px-4 py-3 bg-purple-800 rounded-lg hover:bg-purple-700 border border-purple-600">6</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">your bet: <span id="currentDiceBet" class="text-purple-400">none</span></div>
+
+                    <div id="diceResult" class="text-6xl mb-4">🎲</div>
+
+                    <button onclick="rollDice()" id="rollBtn" class="px-8 py-3 bg-red-800 rounded-lg hover:bg-red-700 text-xl border border-red-600" disabled>roll!</button>
+                    <div id="diceMessage" class="text-lg mt-4"></div>
+                </div>
+            </div>
+        </div>
+
 
         <script src="casino.js"></script>
 </body>
