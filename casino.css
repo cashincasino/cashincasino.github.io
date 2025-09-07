@@ -121,3 +121,19 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(var(--final-rotation, 720deg)); }
 }
+.dice-bet-btn.selected {
+    background: #dc2626 !important;
+    border-color: #991b1b !important;
+    transform: scale(1.1);
+}
+
+.dice-rolling {
+    animation: diceRoll 2s ease-in-out;
+}
+
+@keyframes diceRoll {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(1.2); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    75% { transform: rotate(270deg) scale(1.2); }
+}
