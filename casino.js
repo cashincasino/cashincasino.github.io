@@ -1,5 +1,6 @@
         let currentPage = 'lobby';
         let rouletteBetType = null;
+        let diceBetNumber = null;
         let blackjackGame = {
             deck: [],
             playerHand: [],
@@ -8,6 +9,14 @@
         };
         let balance = parseInt(localStorage.getItem('balance')) || 10;
 
+        function validateInput(input) {
+            let value = parseInt(input.value);
+            if (isNaN(value) || value < 1) {
+                input.value = 1;
+            } else if (value > balance) {
+                input.value = balance;
+            }
+        }
 
         updateBalance();
         setupPlinko();
@@ -25,7 +34,7 @@
         }
 
         function showGame(page) {
-            ['lobby', 'coinflip', 'slots', 'roulette', 'blackjack', 'plinko'].forEach(p => {
+            ['lobby', 'coinflip', 'slots', 'roulette', 'blackjack', 'plinko', 'dice'].forEach(p => {
                 document.getElementById(p).classList.add('hidden');
             });
 
@@ -374,7 +383,7 @@
             for (let i = 0; i < 13; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'plinko-slot';
-                slot.style.left = `${40 + i * 35}px`;
+                slot.style.left = `${42.5 + i * 35}px`;
                 slot.style.top = '545px';
                 slot.textContent = `${multipliers[i]}x`;
                 slot.dataset.multiplier = multipliers[i];
@@ -393,6 +402,7 @@
                 board.appendChild(slot);
             }
         }
+
 
         function dropPlinko() {
             const bet = parseInt(document.getElementById('plinkoBet').value);
@@ -458,4 +468,68 @@
             }
 
             setTimeout(animateBall, 100);
+        }
+
+        function setBetNumber(number) {
+            diceBetNumber = number;
+            document.getElementById('currentDiceBet').textContent = number;
+            document.getElementById('rollBtn').disabled = false;
+
+            document.querySelectorAll('.dice-bet-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+
+        function rollDice() {
+            const bet = parseInt(document.getElementById('diceBet').value);
+            if (bet > balance || !diceBetNumber) return;
+
+            balance -= bet;
+            updateBalance();
+
+            const diceElement = document.getElementById('diceResult');
+            const rollBtn = document.getElementById('rollBtn');
+
+            rollBtn.disabled = true;
+            diceElement.classList.add('dice-rolling');
+
+            let rollCount = 0;
+            const rollInterval = setInterval(() => {
+                const randomNum = Math.floor(Math.random() * 6) + 1;
+                const diceEmojis = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+                diceElement.textContent = diceEmojis[randomNum];
+                rollCount++;
+
+                if (rollCount >= 20) {
+                    clearInterval(rollInterval);
+
+                    const finalRoll = Math.floor(Math.random() * 6) + 1;
+                    const diceEmojis = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+                    diceElement.textContent = diceEmojis[finalRoll];
+                    diceElement.classList.remove('dice-rolling');
+
+                    if (finalRoll === diceBetNumber) {
+                        const winnings = bet * 6;
+                        balance += winnings;
+                        document.getElementById('diceMessage').textContent = `you won c$${winnings - bet}! (6x multiplier)`;
+                        document.getElementById('diceMessage').style.color = '#10b981';
+                    } else {
+                        document.getElementById('diceMessage').textContent = `you lost c$${bet}! rolled ${finalRoll}`;
+                        document.getElementById('diceMessage').style.color = '#ef4444';
+                    }
+
+                    updateBalance();
+
+                    diceBetNumber = null;
+                    document.getElementById('currentDiceBet').textContent = 'none';
+                    document.querySelectorAll('.dice-bet-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+
+                    setTimeout(() => {
+                        rollBtn.disabled = false;
+                    }, 1000);
+                }
+            }, 100);
         }
