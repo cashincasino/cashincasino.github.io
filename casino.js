@@ -271,7 +271,15 @@
             document.getElementById('standBtn').disabled = false;
 
             if (calculateScore(blackjackGame.playerHand) === 21) {
-                stand();
+                if (calculateScore(blackjackGame.dealerHand) === 21) {
+                    blackjackGame.gameActive = false;
+                    updateBlackjackDisplay();
+                    endBlackjackGame('blackjack_tie');
+                } else {
+                    blackjackGame.gameActive = false;
+                    updateBlackjackDisplay();
+                    endBlackjackGame('blackjack');
+                }
             }
         }
 
@@ -330,6 +338,16 @@
             let color = '';
 
             switch (result) {
+                case 'blackjack':
+                    balance += Math.floor(bet * 2.5);
+                    message = `blackjack! you won C$${Math.floor(bet * 1.5)}`;
+                    color = '#10b981';
+                    break;
+                case 'blackjack_tie':
+                    balance += bet;
+                    message = 'both blackjack - tie!';
+                    color = '#fbbf24';
+                    break;
                 case 'bust':
                     message = `bust! you lost C$${bet}`;
                     color = '#ef4444';
@@ -383,8 +401,10 @@
             for (let i = 0; i < 13; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'plinko-slot';
-                slot.style.left = `${42.5 + i * 35}px`;
+                slot.style.left = `${35 + i * 35}px`;
                 slot.style.top = '545px';
+                slot.style.width = '30px';
+                slot.style.height = '40px';
                 slot.textContent = `${multipliers[i]}x`;
                 slot.dataset.multiplier = multipliers[i];
                 slot.dataset.index = i;
@@ -402,7 +422,6 @@
                 board.appendChild(slot);
             }
         }
-
 
         function dropPlinko() {
             const bet = parseInt(document.getElementById('plinkoBet').value);
@@ -434,11 +453,11 @@
                     row++;
                     setTimeout(animateBall, 100);
                 } else {
-                    const slotIndex = Math.max(0, Math.min(12, Math.floor((position - 40) / 35)));
+                    const slotIndex = Math.max(0, Math.min(12, Math.round((position - 57.5) / 35)));
                     const slotElement = document.querySelector(`[data-index="${slotIndex}"]`);
                     const multiplier = parseFloat(slotElement.dataset.multiplier);
 
-                    ball.style.left = `${40 + slotIndex * 35 + 12}px`;
+                    ball.style.left = `${42.5 + slotIndex * 35 + 9}px`;
                     ball.style.top = '560px';
 
                     setTimeout(() => {
