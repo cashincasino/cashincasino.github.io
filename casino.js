@@ -397,7 +397,7 @@
                 }
             }
 
-            const multipliers = [100.0, 50.0, 5.0, 2.0, 1.0, 0.5, 0.25, 0.5, 1.0, 2.0, 5.0, 50.0, 100.0];
+            const multipliers = [100.0, 50.0, 10.0, 5.0, 2.0, 1.0, 0.5, 1.0, 2.0, 5.0, 10.0, 50.0, 100.0];
             for (let i = 0; i < 13; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'plinko-slot';
