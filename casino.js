@@ -9,6 +9,190 @@
         };
         let balance = parseInt(localStorage.getItem('balance')) || 10;
 
+        let ownedSkins = JSON.parse(localStorage.getItem('ownedSkins')) || {
+            blackjack: ['default'],
+            roulette: ['default'],
+            plinko: ['default']
+        };
+        let selectedSkins = JSON.parse(localStorage.getItem('selectedSkins')) || {
+            blackjack: 'default',
+            roulette: 'default',
+            plinko: 'default'
+        };
+
+        const skins = {
+            blackjack: {
+                default: {
+                    name: 'default',
+                    rarity: 'default',
+                    cardBg: 'bg-white',
+                    cardText: 'text-black'
+                },
+                'red-cards': {
+                    name: 'red cards',
+                    rarity: 'common',
+                    cardBg: 'bg-red-500',
+                    cardText: 'text-white'
+                },
+                'blue-cards': {
+                    name: 'blue cards',
+                    rarity: 'common',
+                    cardBg: 'bg-blue-500',
+                    cardText: 'text-white'
+                },
+                'green-cards': {
+                    name: 'green cards',
+                    rarity: 'common',
+                    cardBg: 'bg-green-500',
+                    cardText: 'text-white'
+                },
+                'fire-gradient': {
+                    name: 'fire gradient',
+                    rarity: 'rare',
+                    cardBg: 'bg-gradient-to-r from-red-500 to-orange-500',
+                    cardText: 'text-white'
+                },
+                'ocean-gradient': {
+                    name: 'ocean gradient',
+                    rarity: 'rare',
+                    cardBg: 'bg-gradient-to-r from-blue-500 to-cyan-500',
+                    cardText: 'text-white'
+                },
+                'sunset-gradient': {
+                    name: 'sunset gradient',
+                    rarity: 'rare',
+                    cardBg: 'bg-gradient-to-r from-purple-500 to-pink-500',
+                    cardText: 'text-white'
+                },
+                'galaxy-pattern': {
+                    name: 'galaxy pattern',
+                    rarity: 'legendary',
+                    cardBg: 'bg-black',
+                    cardText: 'text-white',
+                    pattern: 'galaxy'
+                },
+                'matrix-pattern': {
+                    name: 'matrix pattern',
+                    rarity: 'legendary',
+                    cardBg: 'bg-black',
+                    cardText: 'text-green-400',
+                    pattern: 'matrix'
+                },
+                'neon-circuit': {
+                    name: 'neon circuit',
+                    rarity: 'legendary',
+                    cardBg: 'bg-gray-900',
+                    cardText: 'text-cyan-400',
+                    pattern: 'circuit'
+                }
+            },
+            roulette: {
+                default: {
+                    name: 'default',
+                    rarity: 'default'
+                },
+                'rainbow-wheel': {
+                    name: 'rainbow wheel',
+                    rarity: 'common',
+                    type: 'rainbow'
+                },
+                'gold-wheel': {
+                    name: 'gold wheel',
+                    rarity: 'common',
+                    type: 'gold'
+                },
+                'silver-wheel': {
+                    name: 'silver wheel',
+                    rarity: 'common',
+                    type: 'silver'
+                },
+                'fire-wheel': {
+                    name: 'fire wheel',
+                    rarity: 'rare',
+                    type: 'fire-gradient'
+                },
+                'ice-wheel': {
+                    name: 'ice wheel',
+                    rarity: 'rare',
+                    type: 'ice-gradient'
+                },
+                'plasma-wheel': {
+                    name: 'plasma wheel',
+                    rarity: 'rare',
+                    type: 'plasma-gradient'
+                },
+                'cosmic-wheel': {
+                    name: 'cosmic wheel',
+                    rarity: 'legendary',
+                    type: 'cosmic-pattern'
+                },
+                'tribal-wheel': {
+                    name: 'tribal wheel',
+                    rarity: 'legendary',
+                    type: 'tribal-pattern'
+                },
+                'digital-wheel': {
+                    name: 'digital wheel',
+                    rarity: 'legendary',
+                    type: 'digital-pattern'
+                }
+            },
+            plinko: {
+                default: {
+                    name: 'default',
+                    rarity: 'default'
+                },
+                'red-board': {
+                    name: 'red board',
+                    rarity: 'common',
+                    bgColor: '#660000',
+                    pegColor: '#ff0000'
+                },
+                'blue-board': {
+                    name: 'blue board',
+                    rarity: 'common',
+                    bgColor: '#000066',
+                    pegColor: '#0000ff'
+                },
+                'green-board': {
+                    name: 'green board',
+                    rarity: 'common',
+                    bgColor: '#006600',
+                    pegColor: '#00ff00'
+                },
+                'sunset-board': {
+                    name: 'sunset board',
+                    rarity: 'rare',
+                    bgGradient: 'linear-gradient(135deg, #ff6b35, #f7931e, #ffcd3c)'
+                },
+                'ocean-board': {
+                    name: 'ocean board',
+                    rarity: 'rare',
+                    bgGradient: 'linear-gradient(135deg, #667eea, #764ba2, #f093fb)'
+                },
+                'forest-board': {
+                    name: 'forest board',
+                    rarity: 'rare',
+                    bgGradient: 'linear-gradient(135deg, #134e5e, #71b280, #a8e6cf)'
+                },
+                'space-board': {
+                    name: 'space board',
+                    rarity: 'legendary',
+                    pattern: 'space'
+                },
+                'cyberpunk-board': {
+                    name: 'cyberpunk board',
+                    rarity: 'legendary',
+                    pattern: 'cyberpunk'
+                },
+                'ancient-board': {
+                    name: 'ancient board',
+                    rarity: 'legendary',
+                    pattern: 'ancient'
+                }
+            }
+        };
+
         function validateInput(input) {
             let value = parseInt(input.value);
             if (isNaN(value) || value < 1) {
@@ -34,12 +218,17 @@
         }
 
         function showGame(page) {
-            ['lobby', 'coinflip', 'slots', 'roulette', 'blackjack', 'plinko', 'dice'].forEach(p => {
+            ['lobby', 'coinflip', 'slots', 'roulette', 'blackjack', 'plinko', 'dice', 'skins', 'crates'].forEach(p => {
                 document.getElementById(p).classList.add('hidden');
             });
 
             document.getElementById(page).classList.remove('hidden');
             currentPage = page;
+            if (page === 'roulette') {
+                applySkin('roulette', selectedSkins.roulette);
+            } else if (page === 'plinko') {
+                applySkin('plinko', selectedSkins.plinko);
+            }
         }
 
 
@@ -248,8 +437,20 @@
             if (isHidden) {
                 return '<div class="bg-purple-900 text-white px-3 py-4 rounded border border-purple-700 text-center font-bold">?</div>';
             }
-            const color = ['♥', '♦'].includes(card.suit) ? 'text-red-500' : 'text-black';
-            return `<div class="bg-white ${color} px-3 py-4 rounded border text-center font-bold">${card.rank}${card.suit}</div>`;
+
+            const selectedSkin = skins.blackjack[selectedSkins.blackjack];
+            const color = ['♥', '♦'].includes(card.suit) ? 'text-red-500' : selectedSkin.cardText;
+            let cardClass = selectedSkin.cardBg;
+
+            if (selectedSkin.pattern) {
+                if (selectedSkin.pattern === 'galaxy') {
+                    cardClass += ' galaxy-pattern';
+                } else if (selectedSkin.pattern === 'matrix') {
+                    cardClass += ' matrix-pattern';
+                }
+            }
+
+            return `<div class="${cardClass} ${color} px-3 py-4 rounded border text-center font-bold">${card.rank}${card.suit}</div>`;
         }
 
         function startBlackjack() {
@@ -551,4 +752,183 @@
                     }, 1000);
                 }
             }, 100);
+        }
+
+        function showSkins() {
+            showGame('skins');
+        }
+
+        function showCrates() {
+            showGame('crates');
+        }
+
+        function showSkinManager(game) {
+            const skinList = document.getElementById(`${game}SkinList`);
+            skinList.innerHTML = '';
+
+            ownedSkins[game].forEach(skinId => {
+                const skin = skins[game][skinId];
+                const isSelected = selectedSkins[game] === skinId;
+
+                const skinElement = document.createElement('div');
+                skinElement.className = `skin-item p-3 border rounded-lg cursor-pointer ${isSelected ? 'border-yellow-400 bg-yellow-900' : 'border-gray-600 bg-gray-800'}`;
+                skinElement.innerHTML = `
+            <div class="flex justify-between items-center">
+                <span>${skin.name}</span>
+                <span class="text-xs ${getRarityColor(skin.rarity)}">${skin.rarity}</span>
+            </div>
+        `;
+
+                skinElement.onclick = () => selectSkin(game, skinId);
+                skinList.appendChild(skinElement);
+            });
+
+            document.querySelectorAll('.skin-manager').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`${game}Skins`).classList.remove('hidden');
+        }
+
+        function selectSkin(game, skinId) {
+            selectedSkins[game] = skinId;
+            localStorage.setItem('selectedSkins', JSON.stringify(selectedSkins));
+            showSkinManager(game);
+            applySkin(game, skinId);
+        }
+
+        function applySkin(game, skinId) {
+            const skin = skins[game][skinId];
+
+            if (game === 'blackjack') {
+
+            } else if (game === 'roulette') {
+                applyRouletteSkin(skin);
+            } else if (game === 'plinko') {
+                applyPlinkoSkin(skin);
+            }
+        }
+
+        function applyRouletteSkin(skin) {
+            const wheel = document.getElementById('rouletteWheel');
+            if (!wheel) return;
+
+            if (skin.type === 'rainbow') {
+                wheel.style.background = 'conic-gradient(from 0deg, red, orange, yellow, green, blue, indigo, violet, red)';
+            } else if (skin.type === 'gold') {
+                wheel.style.background = 'conic-gradient(from 0deg, #ffd700, #ffed4a, #ffd700, #ffed4a, #ffd700, #ffed4a, #ffd700)';
+            } else if (skin.type === 'silver') {
+                wheel.style.background = 'conic-gradient(from 0deg, #c0c0c0, #e5e5e5, #c0c0c0, #e5e5e5, #c0c0c0, #e5e5e5, #c0c0c0)';
+            } else if (skin.type === 'fire-gradient') {
+                wheel.style.background = 'conic-gradient(from 0deg, #ff0000, #ff4500, #ff6600, #ff8800, #ffaa00, #ff8800, #ff6600, #ff4500, #ff0000)';
+            } else if (skin.type === 'ice-gradient') {
+                wheel.style.background = 'conic-gradient(from 0deg, #87ceeb, #b0e0e6, #e0ffff, #f0f8ff, #e0ffff, #b0e0e6, #87ceeb)';
+            } else if (skin.type === 'plasma-gradient') {
+                wheel.style.background = 'conic-gradient(from 0deg, #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b, #ff006e)';
+            } else if (skin.type === 'cosmic-pattern') {
+                wheel.style.background = 'radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.8), transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.8), transparent 50%), radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.8), transparent 50%), #000';
+                wheel.style.backgroundSize = '50px 50px';
+            } else if (skin.type === 'tribal-pattern') {
+                wheel.style.background = 'repeating-conic-gradient(from 0deg, #8B4513 0deg 30deg, #D2691E 30deg 60deg, #F4A460 60deg 90deg)';
+            } else if (skin.type === 'digital-pattern') {
+                wheel.style.background = 'conic-gradient(from 0deg, #00ff00, #008000, #00ff41, #008020, #00ff00)';
+                wheel.style.backgroundImage = 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 0, 0.1) 2px, rgba(0, 255, 0, 0.1) 4px)';
+            }
+        }
+
+
+        function applyPlinkoSkin(skin) {
+            const board = document.getElementById('plinkoBoard');
+            if (!board) return;
+
+            if (skin.bgColor) {
+                board.style.background = skin.bgColor;
+                board.style.backgroundImage = 'none';
+            } else if (skin.bgGradient) {
+                board.style.background = 'none'
+                board.style.backgroundImage = skin.bgGradient;
+            } else if (skin.pattern === 'space') {
+                board.style.background = '#0a0a2e';
+                board.style.backgroundImage = 'radial-gradient(2px 2px at 20px 30px, white, transparent), radial-gradient(2px 2px at 40px 70px, white, transparent), radial-gradient(1px 1px at 90px 40px, white, transparent)';
+            } else if (skin.pattern === 'cyberpunk') {
+                board.style.background = 'linear-gradient(45deg, #0f0f23, #1a0033, #330066)';
+                board.style.backgroundImage = 'repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(0, 255, 255, 0.1) 10px, rgba(0, 255, 255, 0.1) 12px)';
+            } else if (skin.pattern === 'ancient') {
+                board.style.background = 'linear-gradient(135deg, #8B4513, #CD853F, #DEB887)';
+                board.style.backgroundImage = 'repeating-conic-gradient(from 0deg at 50% 50%, transparent 0deg 15deg, rgba(139, 69, 19, 0.2) 15deg 30deg)';
+            } else {
+                board.style.background = '#000000';
+                board.style.backgroundImage = 'none';
+            }
+
+            const pegs = document.querySelectorAll('.plinko-peg');
+            if (skin.pegColor) {
+                pegs.forEach(peg => {
+                    peg.style.backgroundColor = skin.pegColor;
+                });
+            } else {
+                pegs.forEach(peg => {
+                    peg.style.backgroundColor = '#ffffff';
+                });
+            }
+        }
+
+        function getRarityColor(rarity) {
+            switch (rarity) {
+                case 'common':
+                    return 'text-gray-400';
+                case 'rare':
+                    return 'text-blue-400';
+                case 'legendary':
+                    return 'text-purple-400';
+                default:
+                    return 'text-white';
+            }
+        }
+
+        function openCrate(crateType) {
+            let cost, possibleSkins;
+
+            switch (crateType) {
+                case 'common':
+                    cost = 1000;
+                    possibleSkins = Object.keys(skins.blackjack).filter(key => skins.blackjack[key].rarity === 'common')
+                        .concat(Object.keys(skins.roulette).filter(key => skins.roulette[key].rarity === 'common'))
+                        .concat(Object.keys(skins.plinko).filter(key => skins.plinko[key].rarity === 'common'));
+                    break;
+                case 'rare':
+                    cost = 5000;
+                    possibleSkins = Object.keys(skins.blackjack).filter(key => skins.blackjack[key].rarity === 'rare')
+                        .concat(Object.keys(skins.roulette).filter(key => skins.roulette[key].rarity === 'rare'))
+                        .concat(Object.keys(skins.plinko).filter(key => skins.plinko[key].rarity === 'rare'));
+                    break;
+                case 'legendary':
+                    cost = 10000;
+                    possibleSkins = Object.keys(skins.blackjack).filter(key => skins.blackjack[key].rarity === 'legendary')
+                        .concat(Object.keys(skins.roulette).filter(key => skins.roulette[key].rarity === 'legendary'))
+                        .concat(Object.keys(skins.plinko).filter(key => skins.plinko[key].rarity === 'legendary'));
+                    break;
+            }
+
+            if (balance < cost) {
+                document.getElementById('crateMessage').textContent = 'insufficient funds!';
+                document.getElementById('crateMessage').style.color = '#ef4444';
+                return;
+            }
+
+            balance -= cost;
+            updateBalance();
+
+            const randomSkin = possibleSkins[Math.floor(Math.random() * possibleSkins.length)];
+
+            let gameType;
+            if (Object.keys(skins.blackjack).includes(randomSkin)) gameType = 'blackjack';
+            else if (Object.keys(skins.roulette).includes(randomSkin)) gameType = 'roulette';
+            else if (Object.keys(skins.plinko).includes(randomSkin)) gameType = 'plinko';
+
+            if (!ownedSkins[gameType].includes(randomSkin)) {
+                ownedSkins[gameType].push(randomSkin);
+                localStorage.setItem('ownedSkins', JSON.stringify(ownedSkins));
+            }
+
+            const skin = skins[gameType][randomSkin];
+            document.getElementById('crateMessage').innerHTML = `you got: <span class="${getRarityColor(skin.rarity)}">${skin.name}</span> (${gameType})`;
+            document.getElementById('crateMessage').style.color = '#10b981';
         }
