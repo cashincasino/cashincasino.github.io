@@ -9,6 +9,10 @@
         };
         let balance = parseInt(localStorage.getItem('balance')) || 10;
 
+        let interval = null;
+
+        const toggle = document.getElementById('autoToggle');
+        const label = document.getElementById('toggleLabel');
         let ownedSkins = JSON.parse(localStorage.getItem('ownedSkins')) || {
             blackjack: ['default'],
             roulette: ['default'],
@@ -192,6 +196,19 @@
                 }
             }
         };
+
+        function toggleFullscreen() {
+            const body = document.body;
+            const fullscreenTab = document.getElementById('fullscreenTab');
+
+            if (body.classList.contains('fullscreen-active')) {
+                body.classList.remove('fullscreen-active');
+                fullscreenTab.classList.remove('show');
+            } else {
+                body.classList.add('fullscreen-active');
+                fullscreenTab.classList.add('show');
+            }
+        }
 
         function validateInput(input) {
             let value = parseInt(input.value);
@@ -439,7 +456,18 @@
             }
 
             const selectedSkin = skins.blackjack[selectedSkins.blackjack];
-            const color = ['♥', '♦'].includes(card.suit) ? 'text-red-500' : selectedSkin.cardText;
+
+            const isRedSuit = ['♥', '♦'].includes(card.suit);
+
+            let color;
+            if (selectedSkin.name === 'red cards' && isRedSuit) {
+                color = 'text-white';
+            } else if (isRedSuit) {
+                color = 'text-red-500';
+            } else {
+                color = selectedSkin.cardText;
+            }
+
             let cardClass = selectedSkin.cardBg;
 
             if (selectedSkin.pattern) {
@@ -638,6 +666,10 @@
             ball.className = 'plinko-ball';
             ball.style.left = `${250 - 6}px`;
             ball.style.top = '10px';
+
+            const ballColor = board.dataset.ballColor || '#ffffff';
+            ball.style.backgroundColor = ballColor;
+
             board.appendChild(ball);
 
             let position = 250;
@@ -647,7 +679,7 @@
                 if (row < 14) {
                     const direction = Math.random() < 0.5 ? -15 : 15;
                     position = Math.max(40, Math.min(460, position + direction));
-
+                    
                     ball.style.left = `${position}px`;
                     ball.style.top = `${50 + row * 35}px`;
 
@@ -664,7 +696,9 @@
                     setTimeout(() => {
                         const winnings = Math.floor(bet * multiplier);
                         balance += winnings;
-
+                        console.log(winnings);
+                        console.log(balance);
+                        console.log(bet);
                         if (winnings > bet) {
                             document.getElementById('plinkoMessage').textContent = `you won C$${winnings - bet}! (${multiplier}x)`;
                             document.getElementById('plinkoMessage').style.color = '#10b981';
@@ -675,7 +709,6 @@
                             document.getElementById('plinkoMessage').textContent = `break even! (${multiplier}x)`;
                             document.getElementById('plinkoMessage').style.color = '#fbbf24';
                         }
-
                         updateBalance();
 
                         setTimeout(() => {
@@ -842,7 +875,7 @@
                 board.style.background = skin.bgColor;
                 board.style.backgroundImage = 'none';
             } else if (skin.bgGradient) {
-                board.style.background = 'none'
+                board.style.background = 'none';
                 board.style.backgroundImage = skin.bgGradient;
             } else if (skin.pattern === 'space') {
                 board.style.background = '#0a0a2e';
@@ -868,6 +901,28 @@
                     peg.style.backgroundColor = '#ffffff';
                 });
             }
+
+            let ballColor = '#fbbf24';
+
+            if (skin.rarity === 'rare') {
+                if (skin.name === 'sunset board') {
+                    ballColor = '#ff6b35';
+                } else if (skin.name === 'ocean board') {
+                    ballColor = '#667eea';
+                } else if (skin.name === 'forest board') {
+                    ballColor = '#71b280';
+                }
+            } else if (skin.rarity === 'legendary') {
+                if (skin.name === 'space board') {
+                    ballColor = '#ffffff';
+                } else if (skin.name === 'cyberpunk board') {
+                    ballColor = '#00ffff';
+                } else if (skin.name === 'ancient board') {
+                    ballColor = '#ffd700';
+                }
+            }
+
+            board.dataset.ballColor = ballColor;
         }
 
         function getRarityColor(rarity) {
@@ -885,7 +940,6 @@
 
         function openCrate(crateType) {
             let cost, possibleSkins;
-
             switch (crateType) {
                 case 'common':
                     cost = 1000;
@@ -913,22 +967,48 @@
                 return;
             }
 
+            const unownedSkins = possibleSkins.filter(skinKey => {
+                let gameType;
+                if (Object.keys(skins.blackjack).includes(skinKey)) gameType = 'blackjack';
+                else if (Object.keys(skins.roulette).includes(skinKey)) gameType = 'roulette';
+                else if (Object.keys(skins.plinko).includes(skinKey)) gameType = 'plinko';
+
+                return !ownedSkins[gameType].includes(skinKey);
+            });
+
+            if (unownedSkins.length === 0) {
+                document.getElementById('crateMessage').textContent = 'all skins obtained for this crate!';
+                document.getElementById('crateMessage').style.color = '#f59e0b';
+                return;
+            }
+
             balance -= cost;
             updateBalance();
 
-            const randomSkin = possibleSkins[Math.floor(Math.random() * possibleSkins.length)];
+            const randomSkin = unownedSkins[Math.floor(Math.random() * unownedSkins.length)];
 
             let gameType;
             if (Object.keys(skins.blackjack).includes(randomSkin)) gameType = 'blackjack';
             else if (Object.keys(skins.roulette).includes(randomSkin)) gameType = 'roulette';
             else if (Object.keys(skins.plinko).includes(randomSkin)) gameType = 'plinko';
 
-            if (!ownedSkins[gameType].includes(randomSkin)) {
-                ownedSkins[gameType].push(randomSkin);
-                localStorage.setItem('ownedSkins', JSON.stringify(ownedSkins));
-            }
+            ownedSkins[gameType].push(randomSkin);
+            localStorage.setItem('ownedSkins', JSON.stringify(ownedSkins));
 
             const skin = skins[gameType][randomSkin];
             document.getElementById('crateMessage').innerHTML = `you got: <span class="${getRarityColor(skin.rarity)}">${skin.name}</span> (${gameType})`;
             document.getElementById('crateMessage').style.color = '#10b981';
         }
+        toggle.addEventListener('change', function() {
+            if (this.checked) {
+                label.textContent = 'disable automatic mode';
+                dropPlinko();
+                interval = setInterval(dropPlinko, 500);
+            } else {
+                label.textContent = 'enable automatic mode';
+                if (interval) {
+                    clearInterval(interval);
+                    interval = null;
+                }
+            }
+        });
