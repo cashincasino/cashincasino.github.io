@@ -4,20 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cash-in casino!</title>
+    <title>cash-in casino!*</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="casino.css">
 </head>
 
 <body class="casino-bg min-h-screen text-white">
-    <div class="topbar fixed top-0 left-0 right-0 z-50 p-4 flex justify-between items-center">
-        <h1 class="text-3xl font-bold neon-text">CASH-IN CASINO!</h1>
-        <div class="card-bg rounded-lg px-4 py-2">
-            <span class="text-xl">balance: <span id="balance" class="text-yellow-400 font-bold">C$10</span></span>
+    <div class="topbar fixed top-0 left-0 right-0 z-50 p-4 flex justify-between items-center transition-all duration-300">
+        <h1 class="text-3xl font-bold neon-text">CASH-IN CASINO!*</h1>
+        <div class="flex items-center gap-4">
+            <div class="card-bg rounded-lg px-4 py-2">
+                <span class="text-xl">balance: <span id="balance" class="text-yellow-400 font-bold">C$10</span></span>
+            </div>
+            <button onclick="toggleFullscreen()" class="px-4 py-2 bg-purple-800 rounded-lg hover:bg-purple-700 border border-purple-600 transition-colors">
+                📺 fullscreen
+            </button>
         </div>
     </div>
+    <div class="fullscreen-tab" id="fullscreenTab">
+        <button onclick="toggleFullscreen()" class="text-white hover:text-purple-400 transition-colors">
+            ❌ exit fullscreen
+        </button>
+    </div>
 
-    <div class="sidebar fixed top-16 left-0 w-64 h-full pt-4 z-40 overflow-y-auto border-r border-gray-700">
+
+
+    <div class="sidebar fixed top-16 left-0 w-64 h-full pt-4 z-40 overflow-y-auto border-r border-gray-700 transition-all duration-300">
         <div class="px-4 space-y-2">
             <button onclick="showGame('lobby')" class="w-full p-3 text-left bg-red-900 hover:bg-red-800 rounded-lg transition-colors border border-red-700">
                 🎰 lobby
@@ -47,10 +59,10 @@
 
             <hr class="border-red-700">
 
-            <button onclick="showSkins()" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
+            <button onclick="showSkins()" class="w-full p-3 text-left bg-black hover:bg-gray-900 rounded-lg transition-colors border border-orange-600">
                 ⚪ skins
             </button>
-            <button onclick="showCrates()" class="w-full p-3 text-left bg-purple-900 hover:bg-purple-800 rounded-lg transition-colors border border-purple-700">
+            <button onclick="showCrates()" class="w-full p-3 text-left bg-black hover:bg-gray-900 rounded-lg transition-colors border border-orange-600">
                 📦 crates
             </button>
 
@@ -63,20 +75,21 @@
     </div>
 
 
-    <div class="ml-64 pt-20 min-h-screen">
+    <div class="ml-64 pt-20 min-h-screen transition-all duration-300">
         <div id="lobby" class="container mx-auto px-6 py-8">
             <div class="text-center mb-8">
                 <div class="card-bg rounded-lg p-8 max-w-2xl mx-auto">
-                    <h2 class="text-4xl font-bold mb-4 text-red-400">welcome to the casino!</h2>
+                    <h2 class="text-4xl font-bold mb-4 text-red-400">welcome to the casino!*</h2>
                     <p class="text-xl text-gray-300">choose a game from the sidebar to get started</p>
                     <p class="text-lg mt-4 text-purple-400">good luck and gamble responsibly!</p>
-                    <p class="text-base mt-4 text-purple-400">note: this isnt a real gambling site, it uses fake currency</p>
+                    <p class="text-base mt-4 text-purple-400">* this isnt a real gambling site, nor a virtual casino. it uses fake currency. (C$)</p>
                 </div>
                 <br>
                 <br>
                 <div class="card-bg rounded-lg p-8 max-w-2xl mx-auto">
                     <h2 class="text-4xl font-bold mb-4 text-red-400">update board!</h2>
-                    <p class="text-lg mt-4 text-purple-400">added skins, and crates!</p>
+                    <p class="text-lg mt-4 text-purple-400">added visual enhancements, dupe protection</p>
+                    <p class="text-lg mt-4 text-purple-400">added plinko auto mode, and more!!</p>
                 </div>
             </div>
         </div>
@@ -221,6 +234,13 @@
 
                     <button onclick="dropPlinko()" id="plinkoBtn" class="px-8 py-3 bg-red-800 rounded-lg hover:bg-red-700 text-xl border border-red-600">drop ball!</button>
                     <div id="plinkoMessage" class="text-lg mt-4"></div>
+                    <div class="flex justify-center mb-6">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="autoToggle" class="sr-only peer">
+                            <div class="w-14 h-8 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600"></div>
+                            <span class="ml-3 text-sm font-medium text-white" id="toggleLabel">enable automatic mode</span>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
